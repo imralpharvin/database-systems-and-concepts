@@ -1,0 +1,44 @@
+-- query 1
+
+SELECT name
+FROM reviewer AS RV
+WHERE NOT EXISTS
+(SELECT *
+FROM reviewer NATURAL JOIN rating AS RT1
+WHERE name = 'Elizabeth Thomas'
+AND NOT EXISTS
+(SELECT *
+FROM rating AS RT2
+WHERE RV.rid = RT2.rid
+AND RT1.mid = RT2.mid));
+
+-- query 2
+
+SELECT name, COUNT(mid)
+FROM rating, reviewer
+WHERE rating.rid = reviewer.rid
+GROUP BY name
+ORDER BY COUNT(mid) DESC;
+
+-- query 3
+
+SELECT title, count(rating.rid)
+FROM movie, reviewer, rating
+WHERE rating.rid = reviewer.rid
+AND rating.mid = movie.mid
+GROUP BY title
+HAVING count(rating.rid) > 1;
+
+-- query 4
+SELECT title
+FROM movie
+WHERE mid IN(SELECT mid
+FROM rating
+WHERE stars = (SELECT MAX(stars) FROM rating));
+
+-- query 5
+SELECT title
+FROM movie
+WHERE mid IN (SELECT mid
+FROM rating NATURAL JOIN movie
+WHERE year = (SELECT MIN(year) FROM movie));

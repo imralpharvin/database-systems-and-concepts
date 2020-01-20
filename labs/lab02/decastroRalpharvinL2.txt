@@ -1,0 +1,63 @@
+-- Query 1
+
+SELECT sname
+FROM S, SP, P
+WHERE S. Sno = SP. sno
+AND P. pno = SP. pno
+AND COLOR = 'RED';
+
+-- Query 2
+
+SELECT SP1. sno, SP2.sno
+FROM S AS SP1, S AS SP2
+WHERE SP1.sno < SP2.sno
+AND SP1. CITY LIKE '%N%'
+AND SP2. CITY LIKE '%N%';
+
+-- Query 3
+
+SELECT sname
+FROM S, SP
+WHERE S.sno = SP.sno AND pno IN
+	(SELECT pno 
+	FROM SP 
+	WHERE SP.sno = 'S2'); 
+
+-- Query 4
+A
+SELECT sname
+FROM S
+WHERE S.sno NOT IN
+	(SELECT SP.sno
+	FROM SP
+	WHERE SP.pno = 'P2');
+B
+
+
+SELECT sname
+FROM S
+EXCEPT
+SELECT sname
+FROM S
+WHERE S.sno IN
+	(SELECT SP.sno
+	FROM SP
+	WHERE SP.pno = 'P2');
+
+--5
+SELECT DISTINCT sno
+FROM sp NATURAL JOIN p
+WHERE weight >12;
+
+
+SELECT DISTINCT sno
+FROM sp NATURAL JOIN p
+WHERE weight >12
+GROUP BY sno
+
+select distinct s.sname 
+  2  from s 
+  3  where s.s# NOT IN 
+  4     (select sp.s# 
+  5     from sp 
+  6     where sp.p#='P2');
